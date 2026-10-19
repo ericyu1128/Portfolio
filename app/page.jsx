@@ -3,32 +3,32 @@
 /**
  * Eric Yu — personal portfolio. Single-file React component.
  *
- * Drop-in for Next.js (App Router):  app/page.jsx  →  export default Portfolio
- * Drop-in for Vite/CRA:              import Portfolio from './Portfolio'
+ * Next.js (App Router):  paste into app/page.jsx
+ * Vite / CRA:            import Portfolio from './Portfolio'
  *
- * Requires:  npm i lucide-react   +   Tailwind CSS configured in the project
+ * Requires:  npm i lucide-react   +   Tailwind CSS in the project
  *            (works with Tailwind 3.x and 4.x — no custom tailwind.config needed)
  *
- * Resume button:  put your PDF at  public/Eric_Yu_Resume.pdf
+ * Resume button: put your PDF at  public/Eric_Yu_Resume.pdf
+ *
+ * Tab title + favicon are set via app/layout.js metadata and app/icon.svg.
  */
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
   GitBranch, Users, Download, Mail, ArrowUpRight, ExternalLink, Snowflake,
-  MountainSnow, Wallet, ShieldCheck, KeyRound, TrendingUp, Cpu, Printer,
-  GraduationCap, Terminal, Ruler, Layers, Repeat, Sigma, Target, Activity,
-  Coins, MapPin, Code, Blocks, Scale, ThermometerSun
+  MountainSnow, TrendingUp, Cpu, Printer, GraduationCap, Ruler, Layers,
+  Activity, Repeat, Sigma, Target, ThermometerSun, MapPin, Code
 } from 'lucide-react';
 
-/* ── Icon shim: keeps call sites as <Ic n="wallet" /> ─────────────────────── */
+/* ── Icon shim: keeps call sites as <Ic n="ruler" /> ───────────────────── */
 const ICON_MAP = {
   gitBranch: GitBranch, users: Users, download: Download, mail: Mail,
   arrowUpRight: ArrowUpRight, externalLink: ExternalLink, snowflake: Snowflake,
-  mountainSnow: MountainSnow, wallet: Wallet, shieldCheck: ShieldCheck,
-  keyRound: KeyRound, barChart: TrendingUp, cpu: Cpu, printer: Printer,
-  graduationCap: GraduationCap, terminal: Terminal, ruler: Ruler, layers: Layers,
-  repeat: Repeat, sigma: Sigma, target: Target, activity: Activity, coins: Coins,
-  mapPin: MapPin, codeXml: Code, blocks: Blocks, scale: Scale, thermometer: ThermometerSun
+  mountainSnow: MountainSnow, barChart: TrendingUp, cpu: Cpu, printer: Printer,
+  graduationCap: GraduationCap, ruler: Ruler, layers: Layers, activity: Activity,
+  repeat: Repeat, sigma: Sigma, target: Target, thermometer: ThermometerSun,
+  mapPin: MapPin, codeXml: Code
 };
 
 function Ic({ n, size = 18, className = '', style }) {
@@ -37,7 +37,7 @@ function Ic({ n, size = 18, className = '', style }) {
   return <C size={size} strokeWidth={1.7} className={className} style={style} aria-hidden="true" />;
 }
 
-/* ── Design tokens + component styles (kept in-file so this stays drop-in) ── */
+/* ── Design tokens + component styles (in-file so this stays drop-in) ───── */
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
@@ -620,7 +620,7 @@ function Hero() {
           <span className="hidden sm:inline" style={{ color: 'var(--line)' }}>│</span>
           <span>Now · Faculty of Science Student Ambassador</span>
           <span className="hidden sm:inline" style={{ color: 'var(--line)' }}>│</span>
-          <span className="ice">2 projects shipped &amp; live</span>
+          <span className="ice">Shipped &amp; live · freezed.xyz</span>
         </div>
       </div>
     </header>
@@ -724,32 +724,6 @@ const PROJECTS = [
     ],
     stack: ['Next.js 14', 'App Router', 'TypeScript (strict)', 'Tailwind CSS 3.4', 'SVG', 'Vercel'],
     extra: <LengthModel />
-  },
-  {
-    name: 'CryptoVault',
-    domain: 'cryptovault.site',
-    site: 'https://cryptovault.site',
-    repo: 'https://github.com/ericyu1128/cryptovault',
-    icon: 'wallet',
-    lede: 'A client-side-only multi-chain wallet: one recovery phrase, five independent key trees, and no backend to trust.',
-    body: 'A self-custodial browser wallet spanning Bitcoin, Ethereum, BNB Smart Chain, Solana, XRP Ledger and TON. A single BIP-39 phrase derives five independent key trees, and every signature happens in the tab — there is no server, and no telemetry. Each chain implements one common adapter interface for balance queries, transaction building and signing, and the adapters are code-split so the initial bundle stays small no matter how many chains are supported.',
-    features: [
-      ['shieldCheck', 'Keys never leave the device. The vault is encrypted with AES-256-GCM and the password stretched with PBKDF2-SHA256.'],
-      ['keyRound', 'Private keys are derived fresh for each operation and discarded the moment signing finishes.'],
-      ['coins', 'Native sends including Bitcoin UTXO selection, plus ERC-20 tokens on EVM chains and SPL tokens on Solana.'],
-      ['blocks', 'One-click ERC-20 deployment on top of OpenZeppelin’s standard implementation.'],
-      ['repeat', 'Swaps routed through 0x on Ethereum and BSC, Jupiter on Solana, with a transparent 0.5% fee.'],
-      ['scale', 'Every amount is held as a bigint in native units — sats, wei, lamports — so floating-point drift is impossible.'],
-      ['terminal', 'Tested against published derivation vectors, local EVM nodes, swap fee maths and Playwright end-to-end runs — none of which need a private key.']
-    ],
-    spec: [
-      { k: 'Chains', v: '6' },
-      { k: 'Seed → key trees', v: '1 → 5' },
-      { k: 'Vault crypto', v: 'AES-256-GCM' },
-      { k: 'Backend calls', v: '0' }
-    ],
-    stack: ['Next.js', 'React', 'Tailwind CSS v4', 'Zustand', '@scure/bip39', '@scure/bip32', '@noble/curves', '@scure/btc-signer', 'ethers', '@solana/web3.js', 'xrpl', '@ton/ton', 'Playwright'],
-    extra: null
   }
 ];
 
@@ -757,8 +731,8 @@ function Projects() {
   return (
     <section id="projects" className="mx-auto max-w-[1120px] px-6 py-20 md:py-28">
       <div className="eyebrow reveal">Projects</div>
-      <h2 className="display-med reveal mt-5 text-[clamp(1.8rem,4vw,2.8rem)] leading-tight max-w-[22ch]">
-        Two things I built end to end, both live.
+      <h2 className="display-med reveal mt-5 text-[clamp(1.8rem,4vw,2.8rem)] leading-tight max-w-[24ch]">
+        Built end to end — the model, the interface, and the deploy.
       </h2>
       <div className="mt-12 flex flex-col gap-8">
         {PROJECTS.map((p) => <ProjectCard key={p.name} p={p} />)}
@@ -787,11 +761,11 @@ function About() {
           </p>
           <p className="mt-5 leading-[1.8] mute">
             Most of what I build starts as a statistics problem and ends as something you can click.
-            Freezed began as a sizing formula and grew into a full matching engine; CryptoVault started
-            as a question about key derivation and turned into a wallet that never phones home. I lean
-            on AI co-pilots as a standing part of my workflow — for web development, architecture and
-            scaffolding — which keeps my own hours on the parts that actually decide whether a project
-            is any good: the model, the data, and the edge cases.
+            Freezed began as a sizing formula and grew into a full matching engine — a catalogue, a
+            scoring model, and a visualiser that shows its reasoning. I lean on AI co-pilots as a
+            standing part of my workflow — for web development, architecture and scaffolding — which
+            keeps my own hours on the parts that actually decide whether a project is any good: the
+            model, the data, and the edge cases.
           </p>
           <p className="mt-5 leading-[1.8] mute">
             Off the clock I&rsquo;m a freestyle skier — the reason Freezed exists at all — and I
